@@ -1,7 +1,5 @@
 package cn.xpbootcamp.tennis;
 
-import jdk.internal.joptsimple.internal.Strings;
-
 public class TennisGameImpl implements TennisGame {
     public int P1point = 0;
     public int P2point = 0;
