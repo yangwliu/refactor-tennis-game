@@ -11,7 +11,6 @@ public class TennisGameImpl implements TennisGame {
         this.player2Name = player2Name;
     }
 
-
     public String getScore() {
         if (isSamePoint()) {
             return handleSameScore();
@@ -68,10 +67,6 @@ public class TennisGameImpl implements TennisGame {
             return "Advantage player1";
         }
         return "Advantage player2";
-    }
-
-    private boolean onePlayerIsZero() {
-        return P1point == 0 || P2point == 0;
     }
 
     private String handleSameScore() {
