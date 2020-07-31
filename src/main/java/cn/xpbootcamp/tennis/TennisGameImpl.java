@@ -1,7 +1,5 @@
 package cn.xpbootcamp.tennis;
 
-import cn.xpbootcamp.tennis.TennisGame;
-
 public class TennisGameImpl implements TennisGame {
     public int P1point = 0;
     public int P2point = 0;
@@ -15,82 +13,77 @@ public class TennisGameImpl implements TennisGame {
 
 
     public String getScore() {
+
         String P1res = "";
         String P2res = "";
         String score = "";
-        if (P1point == P2point && P1point < 4) {
-            if (P1point == 0)
-                score = "Love";
-            if (P1point == 1)
-                score = "Fifteen";
-            if (P1point == 2)
-                score = "Thirty";
-            score += "-All";
-        }
-        if (P1point == P2point && P1point >= 3)
-            score = "Deuce";
-
-        if (P1point > 0 && P2point == 0) {
-            if (P1point == 1)
-                P1res = "Fifteen";
-            if (P1point == 2)
-                P1res = "Thirty";
-            if (P1point == 3)
-                P1res = "Forty";
-
-            P2res = "Love";
-            score = P1res + "-" + P2res;
-        }
-        if (P2point > 0 && P1point == 0) {
-            if (P2point == 1)
-                P2res = "Fifteen";
-            if (P2point == 2)
-                P2res = "Thirty";
-            if (P2point == 3)
-                P2res = "Forty";
-
-            P1res = "Love";
-            score = P1res + "-" + P2res;
+        if (P1point == P2point ) {
+            return handleSameScore();
         }
 
-        if (P1point > P2point && P1point < 4) {
-            if (P1point == 2)
-                P1res = "Thirty";
-            if (P1point == 3)
-                P1res = "Forty";
-            if (P2point == 1)
-                P2res = "Fifteen";
-            if (P2point == 2)
-                P2res = "Thirty";
-            score = P1res + "-" + P2res;
-        }
-        if (P2point > P1point && P2point < 4) {
-            if (P2point == 2)
-                P2res = "Thirty";
-            if (P2point == 3)
-                P2res = "Forty";
-            if (P1point == 1)
-                P1res = "Fifteen";
-            if (P1point == 2)
-                P1res = "Thirty";
-            score = P1res + "-" + P2res;
+        if (someWon()) {
+            return handleSomeWon();
         }
 
-        if (P1point > P2point && P2point >= 3) {
-            score = "Advantage player1";
+        if (P1point >= 3 && P2point >= 3) {
+            return handleAllPlayerPointNotLess3();
         }
 
-        if (P2point > P1point && P1point >= 3) {
-            score = "Advantage player2";
-        }
 
-        if (P1point >= 4 && P2point >= 0 && (P1point - P2point) >= 2) {
-            score = "Win for player1";
+        return handleAllPlayerPointLess3();
+    }
+
+    private String handleAllPlayerPointLess3() {
+        String player1Score = getScoreTextForNotBiggerThan3(P1point);
+        String player2Score = getScoreTextForNotBiggerThan3(P2point);
+        return player1Score + "-" + player2Score;
+    }
+
+    private String getScoreTextForNotBiggerThan3(int point) {
+        if (point > 3) {
+            throw new IllegalArgumentException("point should not bigger than 3");
         }
-        if (P2point >= 4 && P1point >= 0 && (P2point - P1point) >= 2) {
-            score = "Win for player2";
+        switch (point) {
+            case 0: return "Love";
+            case 1: return "Fifteen";
+            case 2: return "Thirty";
+            case 3:
+            default:
+                return "Forty";
         }
-        return score;
+    }
+
+    private String handleSomeWon() {
+        if (P1point > P2point) {
+            return "Win for player1";
+        }
+        return "Win for player2";
+    }
+
+    private boolean someWon() {
+        return P1point >=4 && P1point >= P2point + 2 || P2point >=4 && P2point >= P1point + 2;
+    }
+
+    private String handleAllPlayerPointNotLess3() {
+        if (P1point > P2point) {
+            return "Advantage player1";
+        }
+        return "Advantage player2";
+    }
+
+    private boolean onePlayerIsZero() {
+        return P1point == 0 || P2point == 0;
+    }
+
+    private String handleSameScore() {
+        switch (P1point) {
+            case 0: return "Love-All";
+            case 1: return "Fifteen-All";
+            case 2: return "Thirty-All";
+            case 3:
+            default:
+                return "Deuce";
+        }
     }
 
 
