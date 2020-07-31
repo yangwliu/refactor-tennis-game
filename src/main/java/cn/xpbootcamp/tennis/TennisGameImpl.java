@@ -6,17 +6,17 @@ public class TennisGameImpl implements TennisGame {
     public int P1point = 0;
     public int P2point = 0;
 
-    public String P1res = "";
-    public String P2res = "";
     private String player1Name;
     private String player2Name;
-
     public TennisGameImpl(String player1Name, String player2Name) {
         this.player1Name = player1Name;
         this.player2Name = player2Name;
     }
 
+
     public String getScore() {
+        String P1res = "";
+        String P2res = "";
         String score = "";
         if (P1point == P2point && P1point < 4) {
             if (P1point == 0)
