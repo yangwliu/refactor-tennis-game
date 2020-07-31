@@ -13,10 +13,6 @@ public class TennisGameImpl implements TennisGame {
 
 
     public String getScore() {
-
-        String P1res = "";
-        String P2res = "";
-        String score = "";
         if (isSamePoint()) {
             return handleSameScore();
         }
