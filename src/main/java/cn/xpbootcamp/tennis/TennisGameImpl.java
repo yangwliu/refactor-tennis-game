@@ -1,5 +1,7 @@
 package cn.xpbootcamp.tennis;
 
+import jdk.internal.joptsimple.internal.Strings;
+
 public class TennisGameImpl implements TennisGame {
     public int P1point = 0;
     public int P2point = 0;
@@ -32,23 +34,9 @@ public class TennisGameImpl implements TennisGame {
     }
 
     private String handleAllPlayerPointLess3() {
-        String player1Score = getScoreTextForNotBiggerThan3(P1point);
-        String player2Score = getScoreTextForNotBiggerThan3(P2point);
+        String player1Score = getPointText(P1point);
+        String player2Score = getPointText(P2point);
         return player1Score + "-" + player2Score;
-    }
-
-    private String getScoreTextForNotBiggerThan3(int point) {
-        if (point > 3) {
-            throw new IllegalArgumentException("point should not bigger than 3");
-        }
-        switch (point) {
-            case 0: return "Love";
-            case 1: return "Fifteen";
-            case 2: return "Thirty";
-            case 3:
-            default:
-                return "Forty";
-        }
     }
 
     private String handleSomeWon() {
@@ -59,7 +47,7 @@ public class TennisGameImpl implements TennisGame {
     }
 
     private boolean someWon() {
-        return P1point >=4 && P1point >= P2point + 2 || P2point >=4 && P2point >= P1point + 2;
+        return P1point >= 4 && P1point >= P2point + 2 || P2point >=4 && P2point >= P1point + 2;
     }
 
     private String handleAllPlayerPointNotLess3() {
@@ -70,13 +58,21 @@ public class TennisGameImpl implements TennisGame {
     }
 
     private String handleSameScore() {
-        switch (P1point) {
-            case 0: return "Love-All";
-            case 1: return "Fifteen-All";
-            case 2: return "Thirty-All";
-            case 3:
+        String pointText = getPointText(P1point);
+        if ("".equals(pointText) || "Forty".equals(pointText)) {
+            return "Deuce";
+        }
+        return pointText + "-All";
+    }
+
+    private String getPointText(int score) {
+        switch (score) {
+            case 0: return "Love";
+            case 1: return "Fifteen";
+            case 2: return "Thirty";
+            case 3: return "Forty";
             default:
-                return "Deuce";
+                return "";
         }
     }
 
