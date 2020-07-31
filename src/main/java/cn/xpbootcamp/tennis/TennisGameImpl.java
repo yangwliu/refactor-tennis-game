@@ -17,7 +17,7 @@ public class TennisGameImpl implements TennisGame {
         String P1res = "";
         String P2res = "";
         String score = "";
-        if (P1point == P2point ) {
+        if (isSamePoint()) {
             return handleSameScore();
         }
 
@@ -29,8 +29,11 @@ public class TennisGameImpl implements TennisGame {
             return handleAllPlayerPointNotLess3();
         }
 
-
         return handleAllPlayerPointLess3();
+    }
+
+    private boolean isSamePoint() {
+        return P1point == P2point;
     }
 
     private String handleAllPlayerPointLess3() {
