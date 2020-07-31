@@ -1,12 +1,12 @@
 package cn.xpbootcamp.tennis;
 
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,6 +14,14 @@ class TennisGameTest {
     private int player1Score;
     private int player2Score;
     private String expectedScore;
+    private static Player  player1 = new Player("player1");
+    private static Player  player2 = new Player("player2");
+
+    @AfterEach
+    public void clearData() {
+        player1.clearPoint();
+        player2.clearPoint();
+    }
 
     public static Stream<List> getAllScores() {
         return Stream.of(
@@ -60,7 +68,7 @@ class TennisGameTest {
     @ParameterizedTest
     @MethodSource("getAllScores")
     public void checkAllScoresTennisGame2(List<Object> params) {
-        TennisGameImpl game = new TennisGameImpl("player1", "player2");
+        TennisGameImpl game = new TennisGameImpl(player1, player2);
         checkAllScores(params, game);
     }
 
@@ -69,14 +77,8 @@ class TennisGameTest {
         player2Score = (int) params.get(1);
         expectedScore = (String) params.get(2);
 
-        int highestScore = Math.max(this.player1Score, this.player2Score);
-        for (int i = 0; i < highestScore; i++) {
-            if (i < this.player1Score)
-                game.wonPoint("player1");
-            if (i < this.player2Score)
-                game.wonPoint("player2");
-        }
+        player1.addPoint(player1Score);
+        player2.addPoint(player2Score);
         assertEquals(this.expectedScore, game.getScore());
     }
-
 }
